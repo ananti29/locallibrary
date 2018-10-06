@@ -9,7 +9,7 @@ var GenreSchema = new Schema(
     }
 );
 
-// Virtual for bookinstance's URL
+// Virtual for genre's URL
 GenreSchema
     .virtual('url')
     .get(function virtualGenreUrl () {
@@ -17,4 +17,4 @@ GenreSchema
     });
 
 // Export model
-module.exports = mongoose.model('BookInstance', GenreSchema);
+module.exports = mongoose.model('GenreSchema', GenreSchema);
