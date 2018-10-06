@@ -4,7 +4,6 @@ var Schema = mongoose.Schema;
 
 var GenreSchema = new Schema(
     {
-        kirja: { type: Schema.Types.ObjectId, ref: 'Book', required: true },
         tyylilajin_nimi: { type: String, required: true, min: 3, max: 100 }
     }
 );
@@ -17,4 +16,4 @@ GenreSchema
     });
 
 // Export model
-module.exports = mongoose.model('GenreSchema', GenreSchema);
+module.exports = mongoose.model('Genre', GenreSchema);
