@@ -18,7 +18,7 @@ var mongoDB = 'mongodb://adminana:aNlocaL1@ds261755.mlab.com:61755/library';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.on('error', console.error.bind(console, 'MongoDB yhteysvirhe:'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
