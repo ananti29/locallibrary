@@ -66,7 +66,7 @@ function bookCreate (title, summary, isbn, author, genre, cb) {
         kirjailija: author,
         isbn: isbn
     };
-    if (genre != false) bookdetail.genre = genre;
+    if (genre != false) bookdetail.lajityyppi = genre;
 
     var book = new Book(bookdetail);
     book.save(function (err) {
