@@ -39,21 +39,21 @@ function authorCreate (first_name, family_name, d_birth, d_death, kansallisuus, 
             cb(err, null);
             return;
         }
-        console.log('New Author: ' + author);
+        console.log('Uusi kirjailija: ' + author);
         authors.push(author);
         cb(null, author);
     });
 }
 
 function genreCreate (name, cb) {
-    var genre = new Genre({ tyylilajin_nimi: name });
+    var genre = new Genre({ luokan_nimi: name });
 
     genre.save(function (err) {
         if (err) {
             cb(err, null);
             return;
         }
-        console.log('New Genre: ' + genre);
+        console.log('Uusi luokka: ' + genre);
         genres.push(genre);
         cb(null, genre);
     } );
@@ -91,11 +91,11 @@ function bookInstanceCreate (book, imprint, due_back, status, cb) {
     var bookinstance = new BookInstance(bookinstancedetail);
     bookinstance.save(function (err) {
         if (err) {
-            console.log('ERROR CREATING BookInstance: ' + bookinstance);
+            console.log('VIRHE LUOTAESSA Kirjainstanssia: ' + bookinstance);
             cb(err, null);
             return;
         }
-        console.log('New BookInstance: ' + bookinstance);
+        console.log('Uusi kirjainstanssi: ' + bookinstance);
         bookinstances.push(bookinstance);
         cb(null, book);
     });
@@ -119,13 +119,13 @@ function createGenreAuthors (cb) {
             authorCreate('Jim', 'Jones', '1971-12-16', false, 'USA', callback);
         },
         function (callback) {
-            genreCreate('Fantasy', callback);
+            genreCreate('Fantasia', callback);
         },
         function (callback) {
-            genreCreate('Science Fiction', callback);
+            genreCreate('Scifikirjallisuus', callback);
         },
         function (callback) {
-            genreCreate('French Poetry', callback);
+            genreCreate('Ranskalainen runous', callback);
         }
     ],
     // optional callback
@@ -135,25 +135,25 @@ function createGenreAuthors (cb) {
 function createBooks (cb) {
     async.parallel([
         function (callback) {
-            bookCreate('The Name of the Wind (The Kingkiller Chronicle, #1)', 'I have stolen princesses back from sleeping barrow kings. I burned down the town of Trebon. I have spent the night with Felurian and left with both my sanity and my life. I was expelled from the University at a younger age than most people are allowed in. I tread paths by moonlight that others fear to speak of during day. I have talked to Gods, loved women, and written songs that make the minstrels weep.', '9781473211896', authors[0], [genres[0] ], callback);
+            bookCreate('Tuulen nimi (Kuninkaan tappaja #1 sarjassa)', 'Olen varastanut prinsessoja takaisin nukkumisjyrkiltä. Poltin Trebonin kaupungin. Olen viettänyt yötä Felurian kanssa ja jätin sekä minun järkevyyteni että elämäni. Minut karkotettiin yliopistolta nuorempana kuin useimmat ihmiset sallitaan yliopistoon. kuljen polkuja kuunvalossa, joita toiset pelkäävät puhuvan päivällä. Olen puhunut Jumalalle, rakastanut naisia ja kirjoittanut kappaleita, jotka saavat miekkailijat itkemään.', '9781473211896', authors[0], [genres[0] ], callback);
         },
         function (callback) {
-            bookCreate("The Wise Man's Fear (The Kingkiller Chronicle, #2)", 'Picking up the tale of Kvothe Kingkiller once again, we follow him into exile, into political intrigue, courtship, adventure, love and magic... and further along the path that has turned Kvothe, the mightiest magician of his age, a legend in his own time, into Kote, the unassuming pub landlord.', '9788401352836', authors[0], [genres[0] ], callback);
+            bookCreate("Viisaan miehen pelko (Kuninkaan tappaja, #2 sarjassa)", 'Kvothe Kingkillerin tarinan palaaminen jälleen. Seuraamme hänrn tarinaa maanpakoon, poliittiseen viehätykseen, kohteliaisuuteen, seikkailuun, rakkauteen ja taikuuteen ... ja pitkin matkaa, joka on kääntänyt Kvothein, hänen ikäisensä mahtavan taikurin, oman aikansa legendan Koten kaupunkiin mitään aavistamattoman pubin omistajan luo', '9788401352836', authors[0], [genres[0] ], callback);
         },
         function (callback) {
-            bookCreate('The Slow Regard of Silent Things (Kingkiller Chronicle)', 'Deep below the University, there is a dark place. Few people know of it: a broken web of ancient passageways and abandoned rooms. A young woman lives there, tucked among the sprawling tunnels of the Underthing, snug in the heart of this forgotten place.', '9780756411336', authors[0], [genres[0] ], callback);
+            bookCreate('Hiljaiden asioiden hitaus (Kuninkaan tappaja sarja)', 'Syvällä yliopiston alapuolella on pimeä paikka. Harvat ihmiset tietävät siitä: vanhojen käytävien ja hylättyjen huoneiden rikki verkko. Täällä siellä asuu nuori nainen, joka sijoittuu Underthingin rönsyilevien tunneleiden keskelle, siististi tämän unohdetun paikan sydämessä.', '9780756411336', authors[0], [genres[0] ], callback);
         },
         function (callback) {
-            bookCreate('Apes and Angels', 'Humankind headed out to the stars not for conquest, nor exploration, nor even for curiosity. Humans went to the stars in a desperate crusade to save intelligent life wherever they found it. A wave of death is spreading through the Milky Way galaxy, an expanding sphere of lethal gamma ...', '9780765379528', authors[1], [genres[1] ], callback);
+            bookCreate('Apinat ja enkelit', 'Ihmiskunta lähti tähtiin ei valloitusta, etsintää eikä edes uteliaisuutta. Ihmiset menivät tähdet epätoivoiseen ristiretkuun pelastaakseen älykkään elämän missä tahansa he löysivät sen. Kuoleman aalto leviää Linnunradan galaksin läpi, laajeneva tappava gamma...', '9780765379528', authors[1], [genres[1] ], callback);
         },
         function (callback) {
-            bookCreate('Death Wave', "In Ben Bova's previous novel New Earth, Jordan Kell led the first human mission beyond the solar system. They discovered the ruins of an ancient alien civilization. But one alien AI survived, and it revealed to Jordan Kell that an explosion in the black hole at the heart of the Milky Way galaxy has created a wave of deadly radiation, expanding out from the core toward Earth. Unless the human race acts to save itself, all life on Earth will be wiped out...", '9780765379504', authors[1], [genres[1] ], callback);
+            bookCreate('Kuoleman aalto', 'Ben Bovan aikaisemmassa New Earth-mallissa Jordan Kell johti ensimmäisen ihmisjoukkojen aurinkokunnan ulkopuolelle. He löysivät vanhan ulkomaalaisen sivilisaation rauniot. Mutta yksi ulkomaalainen AI selviytyi, ja se paljasti Jordan Kellille, että Linnunradan galaksin sydämessä oleva musta aukko on aiheuttanut aalton tappavaa säteilyä, joka ulottuu ydinmaasta kohti maata. Ellei ihmiskunta pelasta itsensä pelastamiseksi, kaikki maan päällä oleva elämä tuhoutuu ...', '9780765379504', authors[1], [genres[1] ], callback);
         },
         function (callback) {
-            bookCreate('Test Book 1', 'Summary of test book 1', 'ISBN111111', authors[4], [genres[0], genres[1]], callback);
+            bookCreate('Testi kirja 1', 'Testi kirja 1 tiivistelmä', 'ISBN111111', authors[4], [genres[0], genres[1]], callback);
         },
         function (callback) {
-            bookCreate('Test Book 2', 'Summary of test book 2', 'ISBN222222', authors[4], false, callback);
+            bookCreate('Testi kirja 2', 'Testi kirja 2 tiivistelmä', 'ISBN222222', authors[4], false, callback);
         }
     ],
     // optional callback
@@ -172,28 +172,28 @@ function createBookInstances (cb) {
             bookInstanceCreate(books[2], ' Gollancz, 2015.', false, false, callback);
         },
         function (callback) {
-            bookInstanceCreate(books[3], 'New York Tom Doherty Associates, 2016.', false, 'Saatavilla', callback);
+            bookInstanceCreate(books[3], 'New York Tom Doherty Kumppanit, 2016.', false, 'Saatavilla', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[3], 'New York Tom Doherty Associates, 2016.', false, 'Saatavilla', callback);
+            bookInstanceCreate(books[3], 'New York Tom Doherty Kumppanit, 2016.', false, 'Saatavilla', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[3], 'New York Tom Doherty Associates, 2016.', false, 'Saatavilla', callback);
+            bookInstanceCreate(books[3], 'New York Tom Doherty Kumppanit, 2016.', false, 'Saatavilla', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[4], 'New York, NY Tom Doherty Associates, LLC, 2015.', false, 'Saatavilla', callback);
+            bookInstanceCreate(books[4], 'New York Tom Doherty Kumppanit, OY, 2015.', false, 'Saatavilla', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[4], 'New York, NY Tom Doherty Associates, LLC, 2015.', false, 'Huollossa', callback);
+            bookInstanceCreate(books[4], 'New York Tom Doherty Kumppanit, OY, 2015.', false, 'Huollossa', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[4], 'New York, NY Tom Doherty Associates, LLC, 2015.', false, 'Lainassa', callback);
+            bookInstanceCreate(books[4], 'New York Tom Doherty Kumppanit, OY, 2015.', false, 'Lainassa', callback);
         },
         function (callback) {
-            bookInstanceCreate(books[0], 'Imprint XXX2', false, false, callback);
+            bookInstanceCreate(books[0], 'Toiminimi XXX2', false, false, callback);
         },
         function (callback) {
-            bookInstanceCreate(books[1], 'Imprint XXX3', false, false, callback);
+            bookInstanceCreate(books[1], 'Toiminimi XXX3', false, false, callback);
         }
     ],
     // Optional callback
@@ -208,9 +208,9 @@ async.series([
 // Optional callback
 function (err, results) {
     if (err) {
-        console.log('FINAL ERR: ' + err);
+        console.log('Viimeinen virhe: ' + err);
     } else {
-        console.log('BOOKInstances: ' + bookinstances);
+        console.log('Kirjainstanssit: ' + bookinstances);
     }
     // All done, disconnect from database
     mongoose.connection.close();

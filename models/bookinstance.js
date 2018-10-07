@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var BookInstanceSchema = new Schema(
     {
-        kirja: { type: Schema.Types.ObjectId, ref: 'Book', required: true }, // reference to specific book
+        kirja: { type: Schema.Types.ObjectId, ref: 'Kirja', required: true }, // reference to specific book
         toiminimi: { type: String, required: true },
         tila: { type: String, required: true, enum: ['Saatavilla', 'Huollossa', 'Lainassa', 'Varattu'], default: 'Huollossa' },
         palautettava: { type: Date, default: Date.now }
@@ -15,8 +15,8 @@ var BookInstanceSchema = new Schema(
 BookInstanceSchema
     .virtual('url')
     .get(function virtualBookInstanceUrl () {
-        return '/catalog/bookinstance/' + this._id;
+        return '/catalog/kirjainstanssi/' + this._id;
     });
 
 // Export model
-module.exports = mongoose.model('BookInstance', BookInstanceSchema);
+module.exports = mongoose.model('KirjaInstanssi', BookInstanceSchema);

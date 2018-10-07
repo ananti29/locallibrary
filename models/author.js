@@ -14,14 +14,14 @@ var AuthorSchema = new Schema(
 
 // Virtual for author's full name
 AuthorSchema
-    .virtual('fullname')
+    .virtual('kokonimi')
     .get(function virtualName () {
         return this.suku_nimi + ', ' + this.etu_nimi;
     });
 
 // Virtual for author's age
 AuthorSchema
-    .virtual('age')
+    .virtual('ika')
     .get(function virtualAge () {
         return (this.kuolin_aika.getYear() - this.syntyma_aika.getYear()).toString();
     });
@@ -30,8 +30,8 @@ AuthorSchema
 AuthorSchema
     .virtual('url')
     .get(function virtualAuthorUrl () {
-        return '/catalog/author/' + this._id;
+        return '/catalog/kirjailija/' + this._id;
     });
 
 // Export model
-module.exports = mongoose.model('Author', AuthorSchema);
+module.exports = mongoose.model('Kirjailija', AuthorSchema);

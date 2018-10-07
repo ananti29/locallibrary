@@ -5,10 +5,10 @@ var Schema = mongoose.Schema;
 var BookSchema = new Schema(
     {
         otsikko: { type: String, required: true },
-        kirjailija: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
+        kirjailija: { type: Schema.Types.ObjectId, ref: 'Kirjailija', required: true },
         tiivistelma: { type: String, required: true },
         isbn: { type: String, required: true },
-        lajityyppi: [{ type: Schema.Types.ObjectId, ref: 'Genre' }]
+        lajityyppi: [{ type: Schema.Types.ObjectId, ref: 'Luokka' }]
     }
 );
 
@@ -16,8 +16,8 @@ var BookSchema = new Schema(
 BookSchema
     .virtual('url')
     .get(function virtualBookUrl () {
-        return '/catalog/book/' + this._id;
+        return '/catalog/kirja/' + this._id;
     });
 
 // Export model
-module.exports = mongoose.model('Book', BookSchema);
+module.exports = mongoose.model('Kirja', BookSchema);

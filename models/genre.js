@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var GenreSchema = new Schema(
     {
-        tyylilajin_nimi: { type: String, required: true, min: 3, max: 100 }
+        luokan_nimi: { type: String, required: true, min: 3, max: 100 }
     }
 );
 
@@ -12,8 +12,8 @@ var GenreSchema = new Schema(
 GenreSchema
     .virtual('url')
     .get(function virtualGenreUrl () {
-        return '/catalog/genre/' + this._id;
+        return '/catalog/luokka/' + this._id;
     });
 
 // Export model
-module.exports = mongoose.model('Genre', GenreSchema);
+module.exports = mongoose.model('Luokka', GenreSchema);
