@@ -1,13 +1,41 @@
 var Genre = require('../models/genre');
+var Book = require('../models/book');
+var async = require('async');
 
 // Display list of all Genre.
-exports.genreList = function genList (req, res) {
-    res.send('TODO: Genre list');
+exports.genreList = function genList (req, res, next) {
+    Genre.find()
+        .sort([['luokan_nimi', 'ascending']])
+        .exec(function execGenre (err, listGenres) {
+            if (err) { return next(err); }
+            // Successful, so render
+            res.render('genre_list', { title: 'Luokka lista', genreList: listGenres });
+        });
 };
 
 // Display detail page for a specific Genre.
-exports.genreDetail = function genDetail (req, res) {
-    res.send('TODO: Genre detail: ' + req.params.id);
+exports.genreDetail = function genDetail (req, res, next) {
+    async.parallel({
+        genre: function genid (callback) {
+            Genre.findById(req.params.id)
+                .exec(callback);
+        },
+
+        genreBooks: function genbookid (callback) {
+            Book.find({ 'lajityyppi': req.params.id })
+                .exec(callback);
+        }
+
+    }, function errgenre (err, results) {
+        if (err) { return next(err); }
+        if (results.genre === null) { // No results.
+            err = new Error('Luokka ei löydetty');
+            err.status = 404;
+            return next(err);
+        }
+        // Successful, so render
+        res.render('genre_detail', { title: 'Luokan tiedot', genre: results.genre, genreBooks: results.genreBooks });
+    });
 };
 
 // Display Genre create form on GET.

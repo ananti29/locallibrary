@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1= title
+  
+  ul
+    each book in bookList
+      li 
+        a(href=book.url) #{book.otsikko} 
+        |  (#{book.kirjailija.kokonimi})
+
+    else
+      li Kirjoja ei ole olemassa.

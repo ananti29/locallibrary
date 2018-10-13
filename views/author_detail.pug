@@ -1,0 +1,19 @@
+extends layout
+
+block content
+
+  h1 Kirjailija: #{author.kokonimi}
+  p #{author.age_day_format}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Kirjat
+    
+    dl
+      each book in authorsBooks
+        dt 
+          a(href=book.url) #{book.otsikko}
+        dd(style='margin-bottom: 15px') #{book.tiivistelma}
+        
+      else
+        p Tämä kirjailija ei ole julkaissut kirjoja.

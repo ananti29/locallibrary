@@ -2,4 +2,19 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Tervetuloa pieneen kirjastoon, pieni Express kehyksellä kehitetty nettisivusto. Sivusto on kehitetty käyttämällä hyväksi Mozilla kehittäjien yhteisöä.
+  p Lue lisää harjoituksesta täältä: #[a(href='https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs' target='_blank') MDN express harjoitus]
+  
+  h1 Sisältö
+
+  if error
+    p Virhe noudettaessa tietoja.
+  else
+    p Kirjastossa on seuraavat lukumäärät:
+
+    ul
+      li #[strong Kirjat:] !{data.bookCount}
+      li #[strong Kopiot:] !{data.bookInstanceCount}
+      li #[strong Kopiot saatavilla:] !{data.bookInstanceAvailableCount} 
+      li #[strong Kirjailijat:] !{data.authorCount}
+      li #[strong Luokat:] !{data.genreCount}

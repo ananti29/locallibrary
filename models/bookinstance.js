@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var moment = require('moment');
 
 var Schema = mongoose.Schema;
 
@@ -16,6 +17,13 @@ BookInstanceSchema
     .virtual('url')
     .get(function virtualBookInstanceUrl () {
         return '/catalog/kirjainstanssi/' + this._id;
+    });
+
+// Virtual for palautettava in more user friendly mode
+BookInstanceSchema
+    .virtual('palautettava_format')
+    .get(function palformat () {
+        return moment(this.palautettava).locale('fi').format('D MMMM YYYY');
     });
 
 // Export model

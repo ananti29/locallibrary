@@ -1,13 +1,39 @@
 var Author = require('../models/author');
+var async = require('async');
+var Book = require('../models/book');
 
 // Display list of all Authors.
-exports.authorList = function autList (req, res) {
-    res.send('TODO: Author list');
+exports.authorList = function autList (req, res, next) {
+    Author.find()
+        .sort([['suku_nimi', 'ascending']])
+        .exec(function execAuthor (err, listAuthors) {
+            if (err) { return next(err); }
+            // Successful, so render
+            res.render('author_list', { title: 'Kirjailija lista', authorList: listAuthors });
+        });
 };
 
 // Display detail page for a specific Author.
-exports.authorDetail = function autDetail (req, res) {
-    res.send('TODO: Author detail: ' + req.params.id);
+exports.authorDetail = function autDetail (req, res, next) {
+    async.parallel({
+        author: function autid (callback) {
+            Author.findById(req.params.id)
+                .exec(callback);
+        },
+        authorsBooks: function autbook (callback) {
+            Book.find({ 'kirjailija': req.params.id }, 'otsikko tiivistelma')
+                .exec(callback);
+        }
+    }, function auterr (err, results) {
+        if (err) { return next(err); } // Error in API usage.
+        if (results.author === null) { // No results.
+            err = new Error('Kirjailijaa ei löytynyt');
+            err.status = 404;
+            return next(err);
+        }
+        // Successful, so render.
+        res.render('author_detail', { title: 'Kirjailijan tiedot', author: results.author, authorsBooks: results.authorsBooks });
+    });
 };
 
 // Display Author create form on GET.

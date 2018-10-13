@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  h1 luokka: #{genre.luokan_nimi}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Kirjat
+    
+    dl
+    each book in genreBooks
+      dt 
+        a(href=book.url) #{book.otsikko}
+      dd #{book.tiivistelma}
+
+    else
+      p Tässä luokassa ei ole kirjoja

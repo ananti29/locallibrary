@@ -1,7 +1,39 @@
 doctype html
-html
+html(lang='en')
   head
     title= title
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div(class='container-fluid')
+      div(class='row')
+        div(class='col-sm-2')
+          block sidebar
+            ul(class='sidebar-nav')
+              li 
+                a(href='/catalog') Etusivu
+              li 
+                a(href='/catalog/kirjat') Kaikki kirjat
+              li 
+                a(href='/catalog/kirjailijat') Kaikki kirjailijat
+              li 
+                a(href='/catalog/luokat') Kaikki luokat
+              li 
+                a(href='/catalog/kirjainstanssit') Kaikki kirjainstanssit
+              li 
+                hr
+              li 
+                a(href='/catalog/kirjailija/create') Luo uusi kirjailija
+              li 
+                a(href='/catalog/luokka/create') Luo uusi luokka
+              li 
+                a(href='/catalog/kirja/create') Luo uusi kirja
+              li 
+                a(href='/catalog/kirjainstanssi/create') Luo uusi kirjainstanssi (kopio)
+                
+        div(class='col-sm-10')
+          block content
