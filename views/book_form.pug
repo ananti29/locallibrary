@@ -1,0 +1,43 @@
+extends layout
+
+block content
+  h1= title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='title') Otsikko:
+      input#title.form-control(type='text', placeholder='Kirjan nimi' name='title' required='true' value=(undefined===book ? '' : book.otsikko) )
+    div.form-group
+      label(for='author') Kirjailija:
+      select#author.form-control(type='select', placeholder='Valitse kirjailija' name='author' required='true' )
+        for author in authors
+          if book
+            //- Handle GET form, where book.author is an object, and POST form, where it is a string.
+            option(
+              value=author._id
+              selected=(
+                author._id.toString()==book.kirjailija._id
+                || author._id.toString()==book.kirjailija
+              ) ? 'selected' : false
+            ) #{author.kokonimi}
+          else
+            option(value=author._id) #{author.kokonimi}
+    div.form-group
+      label(for='summary') Tiivistelmä:
+      input#summary.form-control(type='textarea', placeholder='Tiivistelmä' name='summary' value=(undefined===book ? '' : book.tiivistelma) required='true')
+    div.form-group
+      label(for='isbn') ISBN:
+      input#isbn.form-control(type='text', placeholder='ISBN numero' name='isbn' value=(undefined===book ? '' : book.isbn) required='true') 
+    div.form-group
+      label Luokka:
+      div
+        for genre in genres
+          div(style='display: inline; padding-right:10px;')
+            input(style='margin-right: 10px;').checkbox-input(type='checkbox', name='genre', id=genre._id, value=genre._id, checked=genre.checked )
+            label(for=genre._id) #{genre.luokan_nimi}
+    button.btn.btn-primary(type='submit') Lähetä
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

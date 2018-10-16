@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  h1=title
+
+  form(method='POST' action='')
+    div.form-group
+      label(for='book') Kirja:
+      select#book.form-control(type='select' placeholder='Valitse kirja' name='book' required='true')
+        for book in bookList
+          if bookinstance
+            option(value=book._id selected=(bookinstance.book.toString()===book._id.toString() ? 'selected' : false)) #{book.otsikko}
+          else
+            option(value=book._id) #{book.otsikko}
+        
+    div.form-group
+      label(for='imprint') Toiminimi:
+      input#imprint.form-control(type='text' placeholder='Julkaisijan ja päivän tiedot' name='imprint' required='true' value=(undefined===bookinstance ? '' : bookinstance.imprint))
+    div.form-group
+      label(for='due_back') Päivä milloin kirja on palautettava:
+      input#due_back.form-control(type='date' name='due_back' value=(undefined===bookinstance ? '' : bookinstance.due_back))
+            
+    div.form-group
+      label(for='status') Tila:
+      select#status.form-control(type='select' placeholder='Valitse tila' name='status' required='true')
+        option(value='Huollossa') Huollossa
+        option(value='Saatavilla') Saatavilla
+        option(value='Lainassa') Lainassa
+        option(value='Varattu') Varattu
+
+    button.btn.btn-primary(type='submit') Lähetä
+
+  if errors 
+    ul
+      for error in errors
+        li!= error.msg

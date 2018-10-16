@@ -1,6 +1,11 @@
 var Author = require('../models/author');
 var async = require('async');
 var Book = require('../models/book');
+var moment = require('moment');
+
+// here are required validators
+const { body, validationResult } = require('express-validator/check');
+const { sanitizeBody } = require('express-validator/filter');
 
 // Display list of all Authors.
 exports.authorList = function autList (req, res, next) {
@@ -38,22 +43,100 @@ exports.authorDetail = function autDetail (req, res, next) {
 
 // Display Author create form on GET.
 exports.authorCreateGet = function autCreateGet (req, res) {
-    res.send('TODO: Author create GET');
+    res.render('author_form', { title: 'Luo kirjailija' });
 };
 
 // Handle Author create on POST.
-exports.authorCreatePost = function autCreatePost (req, res) {
-    res.send('TODO: Author create POST');
-};
+exports.authorCreatePost = [
+    // Validate fields.
+    body('first_name').isLength({ min: 1 }).trim().withMessage('Etunimi on pakollinen.')
+        .isAlphanumeric().withMessage('Etunimessä ei saa olla numeroita'),
+    body('last_name').isLength({ min: 1 }).trim().withMessage('Sukunimi on pakollinen.')
+        .isAlphanumeric().withMessage('Sukunimessä ei saa olla numeroita.'),
+    body('nationality').isLength({ min: 1, max: 100 }).trim().withMessage('Kansallisuus on pakollinen.')
+        .isAlphanumeric().withMessage('Kansallisuudessa ei saa olla numeroita.'),
+    body('date_of_birth', 'Syntymäaika on väärä').optional({ checkFalsy: true, date: moment.isDate('D MMMM YYYY') }),
+    body('date_of_death', 'kuolinaika on väärä').optional({ checkFalsy: true, date: moment.isDate('D MMMM YYYY') }),
+
+    // Sanitize fields.
+    sanitizeBody('first_name').trim().escape(),
+    sanitizeBody('last_name').trim().escape(),
+    sanitizeBody('nationality').trim().escape(),
+    sanitizeBody('date_of_birth').toDate(),
+    sanitizeBody('date_of_death').toDate(),
+
+    // Process request after validation and sanitization.
+    (req, res, next) => {
+        // Extract the validation errors from a request.
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            // There are errors. Render form again with sanitized values/errors messages.
+            res.render('author_form', { title: 'Luo kirjailija', author: req.body, errors: errors.array() });
+        } else {
+            // Data from form is valid.
+
+            // Create an Author object with escaped and trimmed data.
+            var author = new Author(
+                {
+                    etu_nimi: req.body.first_name,
+                    suku_nimi: req.body.last_name,
+                    syntyma_aika: req.body.date_of_birth,
+                    kuolin_aika: req.body.date_of_death,
+                    kansallisuus: req.body.nationality
+                });
+            author.save(function errauthorpost (err) {
+                if (err) { return next(err); }
+                // Successful - redirect to new author record.
+                res.redirect(author.url);
+            });
+        }
+    }
+];
 
 // Display Author delete form on GET.
-exports.authorDeleteGet = function autDeleteGet (req, res) {
-    res.send('TODO: Author delete GET');
+exports.authorDeleteGet = function autDeleteGet (req, res, next) {
+    async.parallel({
+        author: function getauthordel (callback) {
+            Author.findById(req.params.id).exec(callback);
+        },
+        authorsBooks: function getauthorbookdel (callback) {
+            Book.find({ 'kirjailija': req.params.id }).exec(callback);
+        }
+    }, function errauthorbookdel (err, results) {
+        if (err) { return next(err); }
+        if (results.author == null) { // No results.
+            res.redirect('/catalog/kirjailijat');
+        }
+        // Successful, so render.
+        res.render('author_delete', { title: 'Poista kirjailija', author: results.author, authorBooks: results.authorsBooks });
+    });
 };
 
 // Handle Author delete on POST.
-exports.authorDeletePost = function autDeletePost (req, res) {
-    res.send('TODO: Author delete POST');
+exports.authorDeletePost = function autDeletePost (req, res, next) {
+    async.parallel({
+        author: function delpostauthor (callback) {
+            Author.findById(req.body.authorid).exec(callback);
+        },
+        authorsBooks: function delpostauthorbooks (callback) {
+            Book.find({ 'author': req.body.authorid }).exec(callback);
+        }
+    }, function errpostauthorsbooks (err, results) {
+        if (err) { return next(err); }
+        // Success
+        if (results.authorsBooks.length > 0) {
+            // Author has books. Render in same way as for GET route.
+            res.render('author_delete', { title: 'Poista kirjailija', author: results.author, authorBooks: results.authorsBooks });
+        } else {
+            // Author has no books. Delete object and redirect to the list of authors.
+            Author.findByIdAndRemove(req.body.authorid, function deleteAuthor (err) {
+                if (err) { return next(err); }
+                // Success - go to author list
+                res.redirect('/catalog/kirjailijat');
+            });
+        }
+    });
 };
 
 // Display Author update form on GET.

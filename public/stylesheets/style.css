@@ -3,3 +3,10 @@
   padding: 0;
   list-style: none;
 }
+.form-group > input,button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+hr {
+  border-color: #000;
+}
