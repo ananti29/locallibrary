@@ -6,16 +6,16 @@ block content
   form(method='POST' action='')
     div.form-group
       label(for='first_name') Etunimi:
-      input#first_name.form-control(type='text' placeholder='Etunimi' name='first_name' required='true' value=(undefined===author ? '' : author.first_name) )
+      input#first_name.form-control(type='text' placeholder='Etunimi' name='first_name' required='true' value=(undefined===author ? '' : author.etu_nimi) )
       label(for='last_name') Sukunimi:
-      input#last_name.form-control(type='text' placeholder='Sukunimi' name='last_name' required='true' value=(undefined===author ? '' : author.last_name))
+      input#last_name.form-control(type='text' placeholder='Sukunimi' name='last_name' required='true' value=(undefined===author ? '' : author.suku_nimi))
       label(for='nationality') Kansallisuus:
-      input#nationality.form-control(type='text' placeholder='Kansallisuus esim. Suomi' name='nationality' required='true' value=(undefined===author ? '' : author.nationality))
+      input#nationality.form-control(type='text' placeholder='Kansallisuus esim. Suomi tai FIN' name='nationality' required='true' value=(undefined===author ? '' : author.kansallisuus))
     div.form-group
       label(for='date_of_birth') Syntymäaika:
-      input#date_of_birth.form-control(type='date' name='date_of_birth' value=(undefined===author ? '' : author.date_of_birth) )
+      input#date_of_birth.form-control(type='date' name='date_of_birth' required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value=(undefined===author ? '' : author.syntyma_aika_picker) )
       label(for='date_of_death') kuolinaika:
-      input#date_of_birth.form-control(type='date' name='date_of_death' value=(undefined===author ? '' : author.date_of_death) )
+      input#date_of_birth.form-control(type='date' name='date_of_death' required pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}" value=(undefined===author ? '' : author.kuolin_aika_picker) )
     button.btn.btn-primary(type='submit') Lähetä
   if errors 
     ul

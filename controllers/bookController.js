@@ -151,18 +151,52 @@ exports.bookCreatePost = [
 ];
 
 // Display book delete form on GET.
-exports.bookDeleteGet = function bookDelGet (req, res) {
-    res.send('TODO: Book delete GET');
+exports.bookDeleteGet = function bookDelGet (req, res, next) {
+    async.parallel({
+        book: function delgetbook (callback) {
+            Book.findById(req.params.id).populate('kirjailija').populate('lajityyppi').exec(callback);
+        },
+        bookinstances: function delgetbookinstances (callback) {
+            BookInstance.find({ 'kirja': req.params.id }).exec(callback);
+        }
+    }, function (err, results) {
+        if (err) { return next(err); }
+        if (results.book === null) { // No results.
+            res.redirect('/catalog/kirjat');
+        }
+        // Successful, so render.
+        res.render('book_delete', { title: 'Poista kirja', book: results.book, bookinstances: results.bookinstances });
+    });
 };
 
 // Handle book delete on POST.
-exports.bookDeletePost = function bookDelPos (req, res) {
-    res.send('TODO: Book delete POST');
+exports.bookDeletePost = function bookDelPos (req, res, next) {
+    async.parallel({
+        book: function getdelpostbook (callback) {
+            Book.findById(req.params.id).populate('kirjailija').populate('lajityyppi').exec(callback);
+        },
+        bookinstances: function getdelpostbookinstances (callback) {
+            BookInstance.find({ 'kirja': req.params.id }).exec(callback);
+        }
+    }, function (err, results) {
+        if (err) { return next(err); }
+        // Success
+        if (results.bookinstances.length > 0) {
+            res.render('book_delete', { title: 'Poista kirja', book: results.book, bookinstances: results.bookinstances });
+        } else {
+            // Book has no other bookinstances. Delete object and redirect to the list of books.
+            Book.findByIdAndRemove(req.params.id, function delbook (err) {
+                if (err) { return next(err); }
+                // Success - got to books list.
+                res.redirect('/catalog/kirjat');
+            });
+        }
+    });
 };
 
 // Display book update form on GET.
 exports.bookUpdateGet = function bookUpdGet (req, res, next) {
-    // Get book, authors and genres for form.
+    // Get book, authors and genres.
     async.parallel({
         book: function getupdbook (callback) {
             Book.findById(req.params.id).populate('kirjailija').populate('lajityyppi').exec(callback);

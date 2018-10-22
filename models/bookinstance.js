@@ -23,7 +23,13 @@ BookInstanceSchema
 BookInstanceSchema
     .virtual('palautettava_format')
     .get(function palformat () {
-        return moment(this.palautettava).locale('fi').format('D MMMM YYYY');
+        return moment(this.palautettava).locale('fi').format('DD MMMM YYYY');
+    });
+
+BookInstanceSchema
+    .virtual('palautettava_picker')
+    .get(function syntymaformat () {
+        return moment(this.palautettava).format('YYYY-MM-DD');
     });
 
 // Export model

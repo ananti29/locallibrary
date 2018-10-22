@@ -1,0 +1,29 @@
+extends layout
+
+block content
+
+  h1 luokka: #{genre.luokan_nimi}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Kirjat
+     if genreBooks.length
+       p #[strong Poista seuraavat kirjat, jotta voit poistaa luokan.] 
+    dl
+    each book in genreBooks
+      dt 
+        a(href=book.url) #{book.otsikko}
+      dd(style='margin-bottom: 20px;') #{book.tiivistelma}
+
+    else
+      p Tässä luokassa ei ole kirjoja
+
+      p #[strong Haluatko varmasti poistaa kyseisen luokan?]
+
+    form(method='POST' action='')
+      div.form-group
+        input#genreid.form-control(type='hidden',name='genreid', required='true', value=genre._id )
+      if genreBooks.length > 0
+        p muista poistaa kaikki yllälistatut kirjat, jotta voit poistaa luokan. Paina kirjan nimeä poistaaksesi sen.
+      else
+        button.btn.btn-primary(type='submit') Poista

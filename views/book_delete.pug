@@ -1,0 +1,45 @@
+extends layout
+
+block content
+  h1 #{title}: #{book.otsikko}
+  
+  p #[strong Kirjailija:] 
+    a(href=book.kirjailija.url) #{book.kirjailija.kokonimi}
+  p #[strong Tiivistelmä:] #{book.tiivistelma}
+  p #[strong ISBN:] #{book.isbn}
+  p #[strong Luokka:]&nbsp;
+    each genre, index in book.lajityyppi
+      a(href=genre.url) #{genre.luokan_nimi}
+      if index < book.lajityyppi.length - 1
+        |, 
+  
+  div(style='margin-left:20px;margin-top:20px')
+    h4 Kopiot
+
+    each copybook in bookinstances
+      hr
+      if bookinstances.length
+        h3 #[strong Poista seuraavat kopiot kirjasta, jotta voit poistaa kirjan. Paina id:tä poistaaksesi kopion]
+      if copybook.tila==='Saatavilla'
+        p.text-success #{copybook.tila}
+      else if copybook.tila==='Huollossa'
+        p.text-danger #{copybook.tila}
+      else
+        p.text-warning #{copybook.tila} 
+      p #[strong Toiminimi:] #{copybook.toiminimi}
+      if copybook.tila!='Saatavilla'
+        p #[strong Palautettava:] #{copybook.palautettava_format}
+      p #[strong Id:]&nbsp;
+        a(href=copybook.url) #{copybook._id}
+ 
+    else
+      p Kirjastossa ei ole tämän kirjan kopioita.
+
+    p #[strong Haluatko varmasti poistaa kyseisen kirjan?]
+    form(method='POST' action='')
+      div.form-group
+        input#bookid.form-control(type='hidden',name='bookid', required='true', value=book._id )
+      if bookinstances.length > 0
+        p poista ensin kaikki kopiot kirjasta.
+      else
+        button.btn.btn-primary(type='submit') Poista

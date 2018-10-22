@@ -18,7 +18,10 @@ block content
       
   if bookinstance.tila!='Saatavilla'
     p #[strong Palautettava:] #{bookinstance.palautettava_format}
-  p
-    a(href=bookinstance.url+'/delete') Poista kirjakopio
-  p
-    a(href=bookinstance.url+'/update') Päivitä kirjakopio
+    
+  p #[strong Haluatko varmasti poistaa kyseisen kirjakopion?]
+    form(method='POST' action='')
+      div.form-group
+        input#bookinstanceid.form-control(type='hidden',name='bookinstanceid', required='true', value=bookinstance._id )
+
+      button.btn.btn-primary(type='submit') Poista

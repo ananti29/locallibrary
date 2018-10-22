@@ -44,6 +44,18 @@ AuthorSchema
         return this.syntyma_aika ? moment(this.syntyma_aika).locale('fi').format('D MMMM YYYY') : '';
     });
 
+AuthorSchema
+    .virtual('syntyma_aika_picker')
+    .get(function syntymaformat () {
+        return this.syntyma_aika ? moment(this.syntyma_aika).format('YYYY-MM-DD') : '';
+    });
+
+AuthorSchema
+    .virtual('kuolin_aika_picker')
+    .get(function syntymaformat () {
+        return this.kuolin_aika ? moment(this.kuolin_aika).format('YYYY-MM-DD') : '';
+    });
+
 // Virtual for kuolin_aika in more user friendly mode
 AuthorSchema
     .virtual('kuolin_aika_format')
