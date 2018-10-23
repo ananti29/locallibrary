@@ -150,9 +150,8 @@ exports.genreUpdateGet = function genUpdateGet (req, res, next) {
 
 // Handle Genre update on POST.
 exports.genreUpdatePost = [
-
     // Validate that the name field is not empty.
-    body('name', 'Genre name required').isLength({ min: 1 }).trim(),
+    body('name', 'Luokan nimi on pakollinen').isLength({ min: 1 }).trim(),
 
     // Sanitize (trim and escape) the name field.
     sanitizeBody('name').trim().escape(),
