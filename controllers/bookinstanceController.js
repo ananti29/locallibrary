@@ -136,7 +136,6 @@ exports.bookinstanceUpdateGet = function bookinUpdateGet (req, res, next) {
 
 // Handle bookinstance update on POST.
 exports.bookinstanceUpdatePost = [
-
     // Validate fields.
     body('book', 'Kirja on pakollinen').isLength({ min: 1 }).trim(),
     body('imprint', 'Toiminimi on pakollinen').isLength({ min: 1 }).trim(),

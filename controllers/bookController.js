@@ -267,8 +267,7 @@ exports.bookUpdatePost = [
 
         if (!errors.isEmpty()) {
             // There are errors. Render form again with sanitized values/error messages.
-
-            // Get all authors and genres for form.
+            // Get all authors and genres.
             async.parallel({
                 authors: function getupdpostauthors (callback) {
                     Author.find(callback);
