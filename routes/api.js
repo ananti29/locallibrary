@@ -36,7 +36,7 @@ router.get('/', function indexapi (req, res, next) {
 // API GET all books
 router.get('/kirjat', function apibooks (req, res, next) {
     Book.find({}, 'otsikko kirjailija')
-        .populate('kirjailija')
+        .populate('kirjailija', '-__v')
         .exec(function execBook (err, listBooks) {
             if (err) { return next(err); }
             // Successful, so render
@@ -46,7 +46,7 @@ router.get('/kirjat', function apibooks (req, res, next) {
 
 // API GET all authors
 router.get('/kirjailijat', function apiauthors (req, res, next) {
-    Author.find()
+    Author.find().select('-__v')
         .sort([['suku_nimi', 'ascending']])
         .exec(function execAuthor (err, listAuthors) {
             if (err) { return next(err); }
@@ -57,7 +57,7 @@ router.get('/kirjailijat', function apiauthors (req, res, next) {
 
 // API GET all genres
 router.get('/luokat', function apigenres (req, res, next) {
-    Genre.find()
+    Genre.find().select('-__v')
         .sort([['luokan_nimi', 'ascending']])
         .exec(function execGenre (err, listGenres) {
             if (err) { return next(err); }
@@ -68,8 +68,8 @@ router.get('/luokat', function apigenres (req, res, next) {
 
 // API GET all bookinstances
 router.get('/kirjainstanssit', function apibookinstances (req, res, next) {
-    BookInstance.find()
-        .populate('kirja')
+    BookInstance.find().select('-__v')
+        .populate('kirja', '-__v')
         .exec(function execBook (err, listBookinstances) {
             if (err) { return next(err); }
             // Successful, so render
