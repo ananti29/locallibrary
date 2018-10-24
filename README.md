@@ -1,5 +1,14 @@
 # locallibrary
-mdn local library tutorial with own modifications
+mdn local library tutorial with own modifications. Tutorial can be found here: https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Tutorial_local_library_website
+
+api can be found once app is running by going to: localhost:3000/catalog/api   (shows counts of everything on the app).
+
+other possible api queries:
+1. localhost:3000/catalog/api/kirjat (shows all books).
+2. localhost:3000/catalog/api/kirjailijat (shows all authors).
+3. localhost:3000/catalog/api/kirjainstanssit (shows all bookinstances aka copies of books).
+4. localhost:3000/catalog/api/luokat (shows all genres).
+
 In order to use this app:
 1. Copy or clone this repository to where yoy want.
 2. Go to command line (you need to be in the folder where you copied this repository) and run npm install. This is needed in order to install needed packages to run the app.
