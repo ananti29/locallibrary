@@ -7,7 +7,7 @@ block content
     each book in bookList
       li 
         a(href=book.url) #{book.otsikko} 
-        |  (#{book.kirjailija.kokonimi})
+        |  (#{book.kirjailija.kokonimi}, #{book.kirjailija.kansallisuus})
 
     else
       li Kirjoja ei ole olemassa.

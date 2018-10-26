@@ -2,8 +2,8 @@ extends layout
 
 block content
 
-  h1 Kirjailija: #{author.kokonimi}
-  p #{author.ika_paiva_format}
+  h1 Kirjailija: #{author.kokonimi}, #{author.kansallisuus}
+  p #[strong Syntymäaika: ]#{author.ika_paiva_format}
   
   div(style='margin-left:20px;margin-top:20px')
 
@@ -12,8 +12,8 @@ block content
     dl
       each book in authorsBooks
         dt 
-          a(href=book.url) #{book.otsikko}
-        dd(style='margin-bottom: 15px') #{book.tiivistelma}
+        p #[strong Otsikko:] #[a(href=book.url) #{book.otsikko}]
+        dd(style='margin-bottom: 15px') #[strong Tiivistelmä:] #{book.tiivistelma}
         
       else
         p Tämä kirjailija ei ole julkaissut kirjoja.

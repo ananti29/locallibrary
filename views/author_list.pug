@@ -6,7 +6,7 @@ block content
   ul
     each author in authorList
       li 
-        a(href=author.url) #{author.kokonimi} 
+        a(href=author.url) #{author.kokonimi}, #{author.kansallisuus} 
         |  (#{author.ika_paiva_format})
 
     else
