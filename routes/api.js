@@ -35,7 +35,7 @@ router.get('/', function indexapi (req, res, next) {
 
 // API GET all books
 router.get('/kirjat', function apibooks (req, res, next) {
-    Book.find({}, 'otsikko kirjailija')
+    Book.find({}, '-__v')
         .populate('kirjailija', '-__v')
         .exec(function execBook (err, listBooks) {
             if (err) { return next(err); }
